@@ -9,14 +9,14 @@ exports.index = function (req, res) {
 };
 
 //menampilkan data user
-exports.tampildatauser = function (req, res) {
-  connection.query('SELECT * FROM user', function (error, rows, fields) {
-    if (error) {
-      console.log(error);
-    } else {
-      response.ok(rows, res);
-    }
-  });
+exports.tampildatauser = async function (req, res) {
+  try {
+    const [rows] = await connection.query('SELECT * FROM user');
+    res.json(rows);
+  } catch (error) {
+    console.error('Query error:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 //data user berdasarkan id
