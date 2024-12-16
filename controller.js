@@ -1,7 +1,7 @@
 'use strict';
 
 var response = require('./res');
-var connection = require('./koneksi');
+const connection = require('./koneksi');
 const e = require('express');
 
 exports.index = function (req, res) {
