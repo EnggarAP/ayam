@@ -1,11 +1,14 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-const con = mysql.createConnection({
+const connection = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_DBNAME, // Ensure this is set correctly
+  database: process.env.DB_DBNAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
 con.connect((err) => {
@@ -25,3 +28,5 @@ con.connect((err) => {
     con.end();
   });
 });
+
+module.exports = connection;

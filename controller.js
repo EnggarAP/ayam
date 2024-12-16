@@ -20,16 +20,15 @@ exports.tampildatauser = async function (req, res) {
 };
 
 //data user berdasarkan id
-exports.datauserid = function (req, res) {
-  var id = req.body.id;
-  connection.query('SELECT * FROM user WHERE id_user = ?', [id],
-    function (error, rows, fields) {
-      if (error) {
-        console.log(error);
-      } else {
-        response.ok(rows, res);
-      }
-    });
+exports.datauserid = async function (req, res) {
+  const id = req.body.id;
+  try {
+    const [rows] = await connection.query('SELECT * FROM user WHERE id_user = ?', [id]);
+    res.json(rows);
+  } catch (error) {
+    console.error('Query error:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 //tambah data user
