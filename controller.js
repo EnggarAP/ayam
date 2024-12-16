@@ -1,7 +1,7 @@
 'use strict';
 
 var response = require('./res');
-const connection = require('./koneksi');
+var connection = require('./koneksi');
 const e = require('express');
 
 exports.index = function (req, res) {
@@ -9,26 +9,27 @@ exports.index = function (req, res) {
 };
 
 //menampilkan data user
-exports.tampildatauser = async function (req, res) {
-  try {
-    const [rows] = await connection.query('SELECT * FROM user');
-    res.json(rows);
-  } catch (error) {
-    console.error('Query error:', error);
-    res.status(500).send('Internal Server Error');
-  }
+exports.tampildatauser = function (req, res) {
+  connection.query('SELECT * FROM user', function (error, rows, fields) {
+    if (error) {
+      console.log(error);
+    } else {
+      response.ok(rows, res);
+    }
+  });
 };
 
 //data user berdasarkan id
-exports.datauserid = async function (req, res) {
-  const id = req.body.id;
-  try {
-    const [rows] = await connection.query('SELECT * FROM user WHERE id_user = ?', [id]);
-    res.json(rows);
-  } catch (error) {
-    console.error('Query error:', error);
-    res.status(500).send('Internal Server Error');
-  }
+exports.datauserid = function (req, res) {
+  var id = req.body.id;
+  connection.query('SELECT * FROM user WHERE id_user = ?', [id],
+    function (error, rows, fields) {
+      if (error) {
+        console.log(error);
+      } else {
+        response.ok(rows, res);
+      }
+    });
 };
 
 //tambah data user
