@@ -6,7 +6,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //routers
-const routers = require('.');
+const routers = require('../routers');
 routers(app);
 
 app.listen(3000, () => {
